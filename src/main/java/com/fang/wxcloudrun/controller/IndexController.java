@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * index控制器
+ * @author FPH
+ * @since 2022年8月22日23:20:20
  */
 @Controller
-
 public class IndexController {
 
   /**

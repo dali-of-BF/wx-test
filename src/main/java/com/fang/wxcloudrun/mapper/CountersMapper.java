@@ -5,6 +5,10 @@ import com.fang.wxcloudrun.model.Counter;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * @author FPH
+ * @since 2022年8月22日23:19:41
+ */
 @Mapper
 public interface CountersMapper  extends BaseMapper<Counter> {
 

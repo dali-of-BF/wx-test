@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.HashMap;
 
+/**
+ * @author FPH
+ */
 @Data
 public final class ApiResponse {
 
@@ -16,7 +19,7 @@ public final class ApiResponse {
     this.errorMsg = errorMsg;
     this.data = data;
   }
-  
+
   public static ApiResponse ok() {
     return new ApiResponse(0, "", new HashMap<>());
   }
