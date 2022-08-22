@@ -13,5 +13,8 @@ spring:
       suffix: .html
       prefix: /
 
-mybatis:
-  mapper-locations: classpath*:mapper/*Mapper.xml
+#mybatis:
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  mapper-locations: classpath*:mapper/*Mapper.xml

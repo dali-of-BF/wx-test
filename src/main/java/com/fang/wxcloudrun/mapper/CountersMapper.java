@@ -1,12 +1,12 @@
-package com.tencent.wxcloudrun.dao;
+package com.fang.wxcloudrun.mapper;
 
-import com.tencent.wxcloudrun.model.Counter;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.fang.wxcloudrun.model.Counter;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import java.util.List;
 
 @Mapper
-public interface CountersMapper {
+public interface CountersMapper  extends BaseMapper<Counter> {
 
   Counter getCounter(@Param("id") Integer id);
 
