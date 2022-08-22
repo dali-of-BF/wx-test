@@ -274,7 +274,7 @@
 <script>
   init();
   function init() {
-    $.ajax("/api/count", {
+    $.ajax("/wx/api/count", {
       method: "get",
     }).done(function (res) {
       if (res && res.data !== undefined) {
@@ -283,7 +283,7 @@
     });
   }
   function set(action) {
-    $.ajax("/api/count", {
+    $.ajax("/wx/api/count", {
       method: "POST",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
