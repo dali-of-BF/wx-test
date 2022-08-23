@@ -14,8 +14,4 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("load")
 public class WxController extends WeixinJieruController {
 
-    @Override
-    public String getToken(HttpServletRequest httpServletRequest) {
-        return null;
-    }
 }
