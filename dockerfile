@@ -47,5 +47,4 @@
 FROM java:8
 ADD *.jar wx_test.jar
 EXPOSE 8084
-
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/wx_test.jar"]
