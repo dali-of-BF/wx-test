@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @since 2022年8月22日23:49:48
  *
  */
-public class ResultUtils {
+public class ResultUtil {
 
     public static ResponseEntity success(Object object){
         Result result = new Result();

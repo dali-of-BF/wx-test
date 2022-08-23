@@ -1,7 +1,7 @@
 package com.fang.wxcloudrun.common.errors.translators;
 
 import com.fang.wxcloudrun.common.errors.exceptions.BusinessException;
-import com.fang.wxcloudrun.utils.ResultUtils;
+import com.fang.wxcloudrun.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,11 +21,10 @@ public class ExceptionTranslator {
      * @param e
      * @return
      */
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity handlerBusinessException(BusinessException e){
-        return ResultUtils.error(e.getMessage(),e.getErrData());
+    @ExceptionHandler(value = BusinessException.class)
+    public ResponseEntity handleBusinessExceptionHandler(BusinessException e) {
+        return ResultUtil.error(e.getMessage(), e.getErrData());
     }
-
     /**
      * 全局异常捕获
      * @param e
@@ -34,6 +33,6 @@ public class ExceptionTranslator {
     @ExceptionHandler(Exception.class)
     public ResponseEntity handlerException(Exception e){
         log.error("出错了，请联系管理员:{}"+e.getMessage());
-        return ResultUtils.error("出错了，请联系管理员");
+        return ResultUtil.error("出错了，请联系管理员");
     }
 }
