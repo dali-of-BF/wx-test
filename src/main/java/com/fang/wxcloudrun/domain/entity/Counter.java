@@ -1,4 +1,4 @@
-package com.fang.wxcloudrun.model;
+package com.fang.wxcloudrun.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;

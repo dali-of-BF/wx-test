@@ -2,7 +2,7 @@ package com.fang.wxcloudrun.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fang.wxcloudrun.mapper.CountersMapper;
-import com.fang.wxcloudrun.model.Counter;
+import com.fang.wxcloudrun.domain.entity.Counter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

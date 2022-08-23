@@ -1,7 +1,7 @@
 package com.fang.wxcloudrun.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fang.wxcloudrun.model.Counter;
+import com.fang.wxcloudrun.domain.entity.Counter;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

@@ -1,17 +1,26 @@
 package com.fang.wxcloudrun.controller;
 
 import com.fang.wxcloudrun.config.ApiResponse;
-import com.fang.wxcloudrun.dto.CounterRequest;
-import com.fang.wxcloudrun.model.Counter;
+import com.fang.wxcloudrun.domain.entity.Counter;
+import com.fang.wxcloudrun.domain.dto.CounterRequest;
+import com.fang.wxcloudrun.domain.entity.WxUser;
 import com.fang.wxcloudrun.service.CounterService;
+import com.fang.wxcloudrun.service.WxUserService;
+import com.fang.wxcloudrun.utils.ResultUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,16 +29,14 @@ import java.util.Optional;
  * @since 2022年8月22日23:20:44
  */
 @RestController
+@RequiredArgsConstructor
+@Slf4j
+@Api(tags = "微信云测试接口")
 public class CounterController {
 
-  final CounterService counterService;
-  final Logger logger;
+  private final CounterService counterService;
 
-  public CounterController(@Autowired CounterService counterService) {
-    this.counterService = counterService;
-    this.logger = LoggerFactory.getLogger(CounterController.class);
-  }
-
+  private final WxUserService wxUserService;
 
   /**
    * 获取当前计数
@@ -37,7 +44,7 @@ public class CounterController {
    */
   @GetMapping(value = "/api/count")
   ApiResponse get() {
-    logger.info("/api/count get request");
+    log.info("/api/count get request");
     Optional<Counter> counter = counterService.getCounter(1);
     Integer count = 0;
     if (counter.isPresent()) {
@@ -55,7 +62,7 @@ public class CounterController {
    */
   @PostMapping(value = "/api/count")
   ApiResponse create(@RequestBody CounterRequest request) {
-    logger.info("/api/count post request, action: {}", request.getAction());
+    log.info("/api/count post request, action: {}", request.getAction());
 
     Optional<Counter> curCounter = counterService.getCounter(1);
     if (request.getAction().equals("inc")) {
@@ -78,5 +85,20 @@ public class CounterController {
       return ApiResponse.error("参数action错误");
     }
   }
+
+  @PostMapping("test")
+  @ApiOperation("插入测试接口")
+  public ResponseEntity<String> test(){
+    WxUser wxUser = new WxUser();
+    wxUser.setOpenId("123123");
+    return ResultUtil.success("OK");
+  }
+  @GetMapping("test1")
+  @ApiOperation("查询测试接口")
+  public ResponseEntity<List<WxUser>> test1(){
+    List<WxUser> list = wxUserService.list();
+    return ResultUtil.success(list);
+  }
+
 
 }

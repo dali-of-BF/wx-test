@@ -32,7 +32,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("微信测试框架")
-                .description("")
+                .description("这里是专门用作测试的地方")
                 .termsOfServiceUrl("https://gitee.com/durank/wx_test")
                 .version("1.0")
                 .build();

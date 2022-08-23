@@ -1,4 +1,4 @@
-package com.fang.wxcloudrun.handler;
+package com.fang.wxcloudrun.handler.wx;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class MyNormalMessageHandler implements INormalMessageHandler {
      */
     @Override
     public OutputMessage textTypeMsg(TextInputMessage textInputMessage) {
-        log.info("textInputMessage-->"+textInputMessage);
+        log.info("textInputMessage-->"+textInputMessage.getFromUserName());
         return new TextOutputMessage("已经接收到猛男的消息");
     }
 

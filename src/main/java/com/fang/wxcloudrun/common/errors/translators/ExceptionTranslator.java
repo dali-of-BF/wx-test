@@ -32,7 +32,7 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity handlerException(Exception e){
-        log.error("出错了，请联系管理员:{}"+e.getMessage());
+        log.error("出错了，请联系管理员:{}"+e);
         return ResultUtil.error("出错了，请联系管理员");
     }
 }

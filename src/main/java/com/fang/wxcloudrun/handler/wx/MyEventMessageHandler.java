@@ -1,5 +1,10 @@
-package com.fang.wxcloudrun.handler;
+package com.fang.wxcloudrun.handler.wx;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.fang.wxcloudrun.domain.entity.WxUser;
+import com.fang.wxcloudrun.service.WxUserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.weixin4j.model.message.OutputMessage;
 import org.weixin4j.model.message.event.*;
@@ -12,8 +17,11 @@ import org.weixin4j.spi.IEventMessageHandler;
  * 公众号事件处理
  */
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class MyEventMessageHandler implements IEventMessageHandler {
 
+    private final WxUserService wxUserService;
     /**
      * 当公众号被订阅时
      * @param subscribeEventMessage
@@ -21,12 +29,29 @@ public class MyEventMessageHandler implements IEventMessageHandler {
      */
     @Override
     public OutputMessage subscribe(SubscribeEventMessage subscribeEventMessage) {
+        log.info("接收方帐号（我自己）->"+subscribeEventMessage.getToUserName());
+        log.info("从用户发送过来的openId->"+subscribeEventMessage.getFromUserName());
+        //将关注者的OpenId存入数据库
+        WxUser wxUser = new WxUser();
+        wxUser.setOpenId(subscribeEventMessage.getFromUserName());
+        wxUserService.save(wxUser);
         return new TextOutputMessage("感谢你的关注");
     }
 
+    /**
+     * 取消订阅，删除wxUser表的信息
+     * @param unSubscribeEventMessage
+     * @return
+     */
     @Override
-    public OutputMessage unSubscribe(UnSubscribeEventMessage unSubscribeEventMessage) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public OutputMessage unSubscribe(UnSubscribeEventMessage unSubscribeEventMessage){
+        //要取消关注的OpenId
+        log.info("接收方帐号（收到的OpenID）->"+unSubscribeEventMessage.getFromUserName());
+        WxUser wxUser = wxUserService.list(new LambdaQueryWrapper<WxUser>().eq(WxUser::getOpenId, unSubscribeEventMessage.getFromUserName())).stream().findFirst().orElse(null);
+        if(wxUser!=null){
+            wxUserService.removeById(wxUser.getId());
+        }
+        return new TextOutputMessage("Bye Bye");
     }
 
     @Override
