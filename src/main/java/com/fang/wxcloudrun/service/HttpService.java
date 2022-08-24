@@ -54,16 +54,29 @@ public class HttpService {
 
     public void sendMes(){
         WxConfig wxConfig = wxConfigMapper.selectList(new LambdaQueryWrapper<WxConfig>().orderByDesc(WxConfig::getCreatedDate)).stream().findFirst().orElse(null);
-        String openId="oCahj6I9P0Uw2xA2V0PrYjlPJoQY";
+        String openId="oCahj6LRXev7t8C9voxt4AuZqzAg";
         if(wxConfig!=null){
             String url="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+wxConfig.getAccessToken();
             JSONObject postDate = new JSONObject();
             postDate.put("touser",openId);
-            postDate.put("template_id","bA29yBX8iQd-DX0y0e5DyGQ_EnNZEnH56iQ3pxf0XNI");
-            postDate.put("topcolor","#FF0000");
+            postDate.put("template_id","NlV0phpjDwP6jDHoUrgLIaPoAOP0P1juwxuqJAsnVv0");
+            postDate.put("color","#FF0000");
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("User","方"+".DATA");
-            jsonObject.put("Date", Instant.now()+".DATA");
+            JSONObject value1 = new JSONObject();
+            value1.put("value","购车通知");
+            value1.put("color","#173177");
+            jsonObject.put("title",value1);
+//            ---
+            JSONObject value2 = new JSONObject();
+            value2.put("value","陈荣禄");
+            value2.put("color","#173177");
+            jsonObject.put("name",value2);
+//            ---
+            JSONObject value3 = new JSONObject();
+            value3.put("value","厦门市思明区4s店");
+            value3.put("color","#173177");
+            jsonObject.put("address", value3);
+
             postDate.put("data", jsonObject);
             log.info(postDate.toJSONString());
             JSONObject body = restTemplate.postForEntity(url, postDate, JSONObject.class).getBody();
