@@ -1,8 +1,10 @@
 package com.fang.wxcloudrun.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fang.wxcloudrun.service.HttpService;
 import com.fang.wxcloudrun.utils.ResultUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,5 +26,16 @@ public class HttpController {
     @GetMapping("getAccessToken")
     public ResponseEntity<String> getAccessToken(){
         return ResultUtil.success(httpService.getAccessToken());
+    }
+
+    @GetMapping("getCityCode")
+    @ApiOperation("通过城市名获取城市编码")
+    public ResponseEntity<JSONObject> getCode(String city){
+        return ResultUtil.success(httpService.getCityCode(city));
+    }
+    @GetMapping("getWeather")
+    @ApiOperation("通过城市编码获取城市天气")
+    public ResponseEntity<JSONObject> getWeather(String code){
+        return ResultUtil.success(httpService.getWeather(code));
     }
 }

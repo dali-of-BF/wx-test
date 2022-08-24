@@ -2,17 +2,14 @@ package com.fang.wxcloudrun.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.fang.wxcloudrun.domain.vo.AccessTokenVO;
 import com.fang.wxcloudrun.domain.entity.WxConfig;
-import com.fang.wxcloudrun.domain.vo.WxUserInfo;
+import com.fang.wxcloudrun.domain.vo.AccessTokenVO;
 import com.fang.wxcloudrun.mapper.WxConfigMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.time.Instant;
 
 /**
  * @author FPH
@@ -82,5 +79,29 @@ public class HttpService {
             JSONObject body = restTemplate.postForEntity(url, postDate, JSONObject.class).getBody();
             log.info(body.toJSONString());
         }
+    }
+
+    /**
+     * 通过城市获取城市编码
+     * @param city
+     * @return
+     */
+    public JSONObject getCityCode(String city){
+        String url="http://www.iot2ai.top/cgi-bin/intel/weather.txt?city="+city;
+        log.info("城市编码地址-->"+url);
+        JSONObject forObject = restTemplate.getForObject(url, JSONObject.class);
+        return forObject;
+    }
+
+    /**
+     * 通过城市编码获取天气
+     * @param code
+     * @return
+     */
+    public JSONObject getWeather(String code){
+        String url="http://t.weather.sojson.com/api/weather/city/"+code;
+        log.info("天气地址-->"+url);
+        JSONObject forObject = restTemplate.getForObject(url, JSONObject.class);
+        return forObject;
     }
 }
