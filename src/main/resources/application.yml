@@ -28,3 +28,19 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+weixin4j:
+  oauth:
+    secret: 76b87169a5d7ba37f3198b00346df706
+    appid: wx2f821c92b28153e2
+#application:
+#  wx:
+#    miniapp:
+#      appid: wx3da6defd6747f3d7
+#      secret: 0cc6c4dd267f39545ea83458cd43e371
+#      mpAppid: wxbf4cfad0308bb724
+#    messageTemplate:
+#      autoPay: iTvnllwH1ESntjnfiSQ0Xu9ViP8WGLXoN3wiJyGt2MY
+#      courseDissolved: pSiBdDxBIXr1G04HIBsr2urDRo7mDsYA0EGrc796U2Q
+#      noEnoughMoney: MmF0WyqkOlfUNCr3bBcr3LeF3TTw95rJCH9Jddjv_W0
+#      courseRemind: 0au5vSNoBt8HLMUNacUARbNHSyZ-Sd3fBQF1cYvj2dQ
+#      noEnoughPeople: XlVBT1GDvO1xVn3x7RZdpp7aqDZW4W86g994981XpOk
