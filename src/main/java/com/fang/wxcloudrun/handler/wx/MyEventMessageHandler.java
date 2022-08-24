@@ -35,8 +35,11 @@ public class MyEventMessageHandler implements IEventMessageHandler {
         WxUser wxUser = new WxUser();
         wxUser.setOpenId(subscribeEventMessage.getFromUserName());
         wxUserService.save(wxUser);
-        if(subscribeEventMessage.getFromUserName().equals("oaRsI6DITz7hSR5Tr6jTwZLvaQjo")){
-            return new TextOutputMessage("热烈欢迎庄总关注猛男的公众号，欢迎欢迎热烈欢迎");
+        if(subscribeEventMessage.getFromUserName().equals("oCahj6I9P0Uw2xA2V0PrYjlPJoQY")){
+            return new TextOutputMessage("辉哥哥你来啦");
+        }
+        if(subscribeEventMessage.getFromUserName().equals("oCahj6LRXev7t8C9voxt4AuZqzAg")){
+            return new TextOutputMessage("荣禄让我透透");
         }
         return new TextOutputMessage("感谢你的关注");
     }

@@ -30,8 +30,8 @@ mybatis-plus:
 
 weixin4j:
   oauth:
-    secret: 76b87169a5d7ba37f3198b00346df706
-    appid: wx2f821c92b28153e2
+    secret: 58a16a4dd3c6f92fb23bb58b26e0d563
+    appid: wxd9cd80207d5faa7e
 #application:
 #  wx:
 #    miniapp:

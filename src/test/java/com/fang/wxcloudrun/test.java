@@ -13,6 +13,6 @@ public class test {
 
     @Test
     public void test(){
-        httpService.getAccessToken();
+        httpService.sendMes();
     }
 }
