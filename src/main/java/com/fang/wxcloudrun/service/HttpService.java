@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fang.wxcloudrun.domain.entity.WxConfig;
 import com.fang.wxcloudrun.domain.vo.AccessTokenVO;
+import com.fang.wxcloudrun.domain.vo.CityInfoVO;
+import com.fang.wxcloudrun.domain.vo.CityVO;
 import com.fang.wxcloudrun.mapper.WxConfigMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,24 +41,26 @@ public class HttpService {
         wxConfigMapper.insert(WxConfig.builder().accessToken(forObject.getAccess_token()).build());
         return forObject.getAccess_token();
     }
-    public void getUserInfo(){
+
+    /**
+     * 通过openId获取用户信息
+     * @param openId
+     */
+    public JSONObject getUserInfo(String openId){
         WxConfig wxConfig = wxConfigMapper.selectList(new LambdaQueryWrapper<WxConfig>().orderByDesc(WxConfig::getCreatedDate)).stream().findFirst().orElse(null);
-        String openId="oCahj6LRXev7t8C9voxt4AuZqzAg";
-        if(wxConfig!=null){
-            String url="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+wxConfig.getAccessToken()+"&openid="+openId;
-            JSONObject forObject = restTemplate.getForObject(url, JSONObject.class);
-            log.info(forObject.toJSONString());
-        }
+        String url="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+wxConfig.getAccessToken()+"&openid="+openId;
+        JSONObject forObject = restTemplate.getForObject(url, JSONObject.class);
+        return forObject;
     }
 
     public void sendMes(){
         WxConfig wxConfig = wxConfigMapper.selectList(new LambdaQueryWrapper<WxConfig>().orderByDesc(WxConfig::getCreatedDate)).stream().findFirst().orElse(null);
-        String openId="oCahj6LRXev7t8C9voxt4AuZqzAg";
+        String openId="oCahj6GnayoWeQ5pMIrTuH5phTks";
         if(wxConfig!=null){
             String url="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+wxConfig.getAccessToken();
             JSONObject postDate = new JSONObject();
             postDate.put("touser",openId);
-            postDate.put("template_id","NlV0phpjDwP6jDHoUrgLIaPoAOP0P1juwxuqJAsnVv0");
+            postDate.put("template_id","LeFaXVruTFz2qy0aN2mrg9YRnje6Edp7804ZRmrK3-U");
             postDate.put("color","#FF0000");
             JSONObject jsonObject = new JSONObject();
             JSONObject value1 = new JSONObject();
@@ -65,7 +69,7 @@ public class HttpService {
             jsonObject.put("title",value1);
 //            ---
             JSONObject value2 = new JSONObject();
-            value2.put("value","陈荣禄");
+            value2.put("value","庄姣钦");
             value2.put("color","#173177");
             jsonObject.put("name",value2);
 //            ---
@@ -73,6 +77,11 @@ public class HttpService {
             value3.put("value","厦门市思明区4s店");
             value3.put("color","#173177");
             jsonObject.put("address", value3);
+//            --
+            JSONObject value4 = new JSONObject();
+            value4.put("value","奔驰（2022款 GLS 450 4MATIC 豪华款）");
+            value4.put("color","#173177");
+            jsonObject.put("car", value4);
 
             postDate.put("data", jsonObject);
             log.info(postDate.toJSONString());
@@ -86,10 +95,10 @@ public class HttpService {
      * @param city
      * @return
      */
-    public JSONObject getCityCode(String city){
+    public CityVO getCityCode(String city){
         String url="http://www.iot2ai.top/cgi-bin/intel/weather.txt?city="+city;
         log.info("城市编码地址-->"+url);
-        JSONObject forObject = restTemplate.getForObject(url, JSONObject.class);
+        CityVO forObject = restTemplate.getForObject(url, CityVO.class);
         return forObject;
     }
 
