@@ -2,6 +2,7 @@ package com.fang.wxcloudrun.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fang.wxcloudrun.domain.vo.CityVO;
+import com.fang.wxcloudrun.service.AccessTokenService;
 import com.fang.wxcloudrun.service.HttpService;
 import com.fang.wxcloudrun.utils.ResultUtil;
 import io.swagger.annotations.Api;
@@ -24,26 +25,46 @@ public class HttpController {
 
     private final HttpService httpService;
 
-    @GetMapping("getAccessToken")
-    @ApiOperation("获取/更新accessToken信息")
-    public ResponseEntity<String> getAccessToken(){
-        return ResultUtil.success(httpService.getAccessToken());
+    private final AccessTokenService accessTokenService;
+
+    @GetMapping("checkRedisAccessToken")
+    @ApiOperation("检查redis是否存在accessToken")
+    public ResponseEntity<String> checkRedis(){
+        accessTokenService.checkAccess();
+        return ResultUtil.success("success");
     }
 
-    @GetMapping("getCityCode")
-    @ApiOperation("通过城市名获取城市编码")
-    public ResponseEntity<CityVO> getCode(String city){
-        return ResultUtil.success(httpService.getCityCode(city));
-    }
-    @GetMapping("getWeather")
-    @ApiOperation("通过城市编码获取城市天气")
-    public ResponseEntity<JSONObject> getWeather(String code){
-        return ResultUtil.success(httpService.getWeather(code));
-    }
+//    @GetMapping("getAccessToken")
+//    @ApiOperation("获取/更新accessToken信息")
+//    public ResponseEntity<String> getAccessToken(){
+//        return ResultUtil.success(httpService.saveAccessToken());
+//    }
+
+//    @GetMapping("getCityCode")
+//    @ApiOperation("通过城市名获取城市编码")
+//    public ResponseEntity<CityVO> getCode(String city){
+//        return ResultUtil.success(httpService.getCityCode(city));
+//    }
+//    @GetMapping("getWeather")
+//    @ApiOperation("通过城市编码获取城市天气")
+//    public ResponseEntity<JSONObject> getWeather(String code){
+//        return ResultUtil.success(httpService.getWeather(code));
+//    }
 
     @GetMapping("getUserInfo")
     @ApiOperation("通过openId获取用户信息")
     public ResponseEntity<JSONObject> getUserInfo(String openId){
+        accessTokenService.checkAccess();
         return ResultUtil.success(httpService.getUserInfo(openId));
+    }
+
+    @GetMapping
+    @ApiOperation("发送消息")
+    public ResponseEntity<JSONObject> getUserInfo(String name,String car,String address,String openId){
+        accessTokenService.checkAccess();
+        String accessToken = accessTokenService.getAccessToken();
+        httpService.sendMes(name,car,address,openId,accessToken);
+        return ResultUtil.success("success");
+
     }
 }

@@ -20,12 +20,15 @@ import java.util.List;
 public class WeatherService {
 
     private final HttpService httpService;
+
+    private final AccessTokenService accessTokenService;
     /**
      * 通过城市获取天气信息
      * @param city
      * @return
      */
     public JSONObject getWeather(String city){
+        accessTokenService.checkAccess();
         JSONObject result=new JSONObject();
         CityVO cityCode = httpService.getCityCode(city);
         List<CityInfoVO> list = cityCode.getList();

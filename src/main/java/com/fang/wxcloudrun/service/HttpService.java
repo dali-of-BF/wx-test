@@ -24,23 +24,34 @@ public class HttpService {
     private final RestTemplate restTemplate;
     private final WxConfigMapper wxConfigMapper;
 
+
     @Value("${weixin4j.oauth.appid}")
     private String appid;
 
     @Value("${weixin4j.oauth.secret}")
     private String secret;
 
-    public String getAccessToken(){
-        log.info("appid-->"+appid);
-        log.info("secret-->"+secret);
-        String url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+secret;
-        AccessTokenVO forObject = restTemplate.getForObject(url, AccessTokenVO.class);
-        log.info("AccessToken-->"+forObject.toString());
+    /**
+     * 将accessToken保存进数据库
+     * @return
+     */
+    public String saveAccessToken(){
         //存入数据库
+        AccessTokenVO accessToken = getAccessToken();
         wxConfigMapper.delete(null);
-        wxConfigMapper.insert(WxConfig.builder().accessToken(forObject.getAccess_token()).build());
-        return forObject.getAccess_token();
+        wxConfigMapper.insert(WxConfig.builder().accessToken(accessToken.getAccess_token()).build());
+        return accessToken.getAccess_token();
     }
+
+    /**
+     * 查询accessToken
+     * @return
+     */
+    public AccessTokenVO getAccessToken(){
+        String url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+secret;
+        return restTemplate.getForObject(url, AccessTokenVO.class);
+    }
+
 
     /**
      * 通过openId获取用户信息
@@ -53,11 +64,10 @@ public class HttpService {
         return forObject;
     }
 
-    public void sendMes(){
+    public void sendMes(String name,String car,String address,String openId,String accessToken){
         WxConfig wxConfig = wxConfigMapper.selectList(new LambdaQueryWrapper<WxConfig>().orderByDesc(WxConfig::getCreatedDate)).stream().findFirst().orElse(null);
-        String openId="oCahj6GnayoWeQ5pMIrTuH5phTks";
         if(wxConfig!=null){
-            String url="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+wxConfig.getAccessToken();
+            String url="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken;
             JSONObject postDate = new JSONObject();
             postDate.put("touser",openId);
             postDate.put("template_id","LeFaXVruTFz2qy0aN2mrg9YRnje6Edp7804ZRmrK3-U");
@@ -69,17 +79,17 @@ public class HttpService {
             jsonObject.put("title",value1);
 //            ---
             JSONObject value2 = new JSONObject();
-            value2.put("value","庄姣钦");
+            value2.put("value",name);
             value2.put("color","#173177");
             jsonObject.put("name",value2);
 //            ---
             JSONObject value3 = new JSONObject();
-            value3.put("value","厦门市思明区4s店");
+            value3.put("value",address);
             value3.put("color","#173177");
             jsonObject.put("address", value3);
 //            --
             JSONObject value4 = new JSONObject();
-            value4.put("value","奔驰（2022款 GLS 450 4MATIC 豪华款）");
+            value4.put("value",car);
             value4.put("color","#173177");
             jsonObject.put("car", value4);
 

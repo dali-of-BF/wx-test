@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccessTokenVO {
     private String access_token;
-    private String expires_in;
+    private Long expires_in;
 }
