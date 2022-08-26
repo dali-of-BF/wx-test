@@ -64,40 +64,38 @@ public class HttpService {
         return forObject;
     }
 
-    public void sendMes(String name,String car,String address,String openId,String accessToken){
-        WxConfig wxConfig = wxConfigMapper.selectList(new LambdaQueryWrapper<WxConfig>().orderByDesc(WxConfig::getCreatedDate)).stream().findFirst().orElse(null);
-        if(wxConfig!=null){
-            String url="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken;
-            JSONObject postDate = new JSONObject();
-            postDate.put("touser",openId);
-            postDate.put("template_id","LeFaXVruTFz2qy0aN2mrg9YRnje6Edp7804ZRmrK3-U");
-            postDate.put("color","#FF0000");
-            JSONObject jsonObject = new JSONObject();
-            JSONObject value1 = new JSONObject();
-            value1.put("value","购车通知");
-            value1.put("color","#173177");
-            jsonObject.put("title",value1);
+    public JSONObject sendMes(String name,String car,String address,String openId,String accessToken){
+        String url="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken;
+        JSONObject postDate = new JSONObject();
+        postDate.put("touser",openId);
+        postDate.put("template_id","LeFaXVruTFz2qy0aN2mrg9YRnje6Edp7804ZRmrK3-U");
+        postDate.put("color","#FF0000");
+        JSONObject jsonObject = new JSONObject();
+        JSONObject value1 = new JSONObject();
+        value1.put("value","购车通知");
+        value1.put("color","#173177");
+        jsonObject.put("title",value1);
 //            ---
-            JSONObject value2 = new JSONObject();
-            value2.put("value",name);
-            value2.put("color","#173177");
-            jsonObject.put("name",value2);
+        JSONObject value2 = new JSONObject();
+        value2.put("value",name);
+        value2.put("color","#173177");
+        jsonObject.put("name",value2);
 //            ---
-            JSONObject value3 = new JSONObject();
-            value3.put("value",address);
-            value3.put("color","#173177");
-            jsonObject.put("address", value3);
+        JSONObject value3 = new JSONObject();
+        value3.put("value",address);
+        value3.put("color","#173177");
+        jsonObject.put("address", value3);
 //            --
-            JSONObject value4 = new JSONObject();
-            value4.put("value",car);
-            value4.put("color","#173177");
-            jsonObject.put("car", value4);
+        JSONObject value4 = new JSONObject();
+        value4.put("value",car);
+        value4.put("color","#173177");
+        jsonObject.put("car", value4);
 
-            postDate.put("data", jsonObject);
-            log.info(postDate.toJSONString());
-            JSONObject body = restTemplate.postForEntity(url, postDate, JSONObject.class).getBody();
-            log.info(body.toJSONString());
-        }
+        postDate.put("data", jsonObject);
+        log.info(postDate.toJSONString());
+        JSONObject body = restTemplate.postForEntity(url, postDate, JSONObject.class).getBody();
+        log.info(body.toJSONString());
+        return body;
     }
 
     /**

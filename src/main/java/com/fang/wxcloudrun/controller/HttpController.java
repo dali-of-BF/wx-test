@@ -63,8 +63,7 @@ public class HttpController {
     public ResponseEntity<JSONObject> getUserInfo(String name,String car,String address,String openId){
         accessTokenService.checkAccess();
         String accessToken = accessTokenService.getAccessToken();
-        httpService.sendMes(name,car,address,openId,accessToken);
-        return ResultUtil.success("success");
+        return ResultUtil.success(httpService.sendMes(name,car,address,openId,accessToken));
 
     }
 }
