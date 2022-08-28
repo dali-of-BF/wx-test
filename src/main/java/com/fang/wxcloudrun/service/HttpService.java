@@ -57,9 +57,8 @@ public class HttpService {
      * 通过openId获取用户信息
      * @param openId
      */
-    public JSONObject getUserInfo(String openId){
-        WxConfig wxConfig = wxConfigMapper.selectList(new LambdaQueryWrapper<WxConfig>().orderByDesc(WxConfig::getCreatedDate)).stream().findFirst().orElse(null);
-        String url="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+wxConfig.getAccessToken()+"&openid="+openId;
+    public JSONObject getUserInfo(String openId,String accessToken){
+        String url="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+openId+"&lang=zh_CN";
         JSONObject forObject = restTemplate.getForObject(url, JSONObject.class);
         return forObject;
     }

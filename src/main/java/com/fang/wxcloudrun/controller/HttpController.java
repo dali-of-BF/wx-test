@@ -27,16 +27,11 @@ public class HttpController {
 
     private final AccessTokenService accessTokenService;
 
-    @GetMapping("checkRedisAccessToken")
-    @ApiOperation("检查redis是否存在accessToken")
-    public ResponseEntity<String> checkRedis(){
-        return ResultUtil.success(accessTokenService.checkAccess());
-    }
 
     @GetMapping("getUserInfo")
     @ApiOperation("通过openId获取用户信息")
     public ResponseEntity<JSONObject> getUserInfo(String openId){
-        accessTokenService.checkAccess();
-        return ResultUtil.success(httpService.getUserInfo(openId));
+        String accessToken = accessTokenService.checkAccess();
+        return ResultUtil.success(httpService.getUserInfo(openId,accessToken));
     }
 }
