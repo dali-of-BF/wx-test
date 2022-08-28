@@ -35,7 +35,8 @@ public class MyEventMessageHandler implements IEventMessageHandler {
         WxUser wxUser = new WxUser();
         wxUser.setOpenId(subscribeEventMessage.getFromUserName());
         wxUserService.save(wxUser);
-        return new TextOutputMessage("感谢你的关注");
+        return new TextOutputMessage("发送天气:你所在的城市，即可获取天气预报，\n" +
+                "例如： 天气:厦门(英文符号的冒号)");
     }
 
     /**

@@ -1,11 +1,21 @@
 package com.fang.wxcloudrun.handler.wx;
 
+import com.fang.wxcloudrun.domain.vo.WeatherVO;
+import com.fang.wxcloudrun.service.AccessTokenService;
+import com.fang.wxcloudrun.service.HttpService;
+import com.fang.wxcloudrun.service.WeatherService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.weixin4j.model.message.OutputMessage;
 import org.weixin4j.model.message.normal.*;
 import org.weixin4j.model.message.output.TextOutputMessage;
 import org.weixin4j.spi.INormalMessageHandler;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author FPH
@@ -14,7 +24,13 @@ import org.weixin4j.spi.INormalMessageHandler;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class MyNormalMessageHandler implements INormalMessageHandler {
+
+    private final WeatherService weatherService;
+
+    private final HttpService httpService;
+    private final AccessTokenService accessTokenService;
     /**
      * 一般处理文字类型的消息
      * @param textInputMessage
@@ -22,8 +38,19 @@ public class MyNormalMessageHandler implements INormalMessageHandler {
      */
     @Override
     public OutputMessage textTypeMsg(TextInputMessage textInputMessage) {
-        log.info("textInputMessage-->"+textInputMessage.getFromUserName());
-        return new TextOutputMessage("已经接收到猛男的消息");
+        String content = textInputMessage.getContent();
+        if(textInputMessage.getMsgType().equals("text")&& StringUtils.isNotEmpty(content)){
+            //判断是否是天气：城市或者是天气:城市
+            List<String> list = Arrays.stream(content.split(":")).collect(Collectors.toList());
+            String handler = list.stream().findFirst().orElse(null);
+            if(StringUtils.isNotEmpty(handler)&&"天气".equals(handler)&&list.size()==2){
+                String city = list.get(1);
+                WeatherVO weather = weatherService.getWeather(city);
+                httpService.sendWeather(weather,accessTokenService.checkAccess(),textInputMessage.getFromUserName());
+                return null;
+            }
+        }
+        return new TextOutputMessage("哈哈嘿");
     }
 
     @Override

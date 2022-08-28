@@ -47,6 +47,50 @@ public class HttpService {
         return forObject;
     }
 
+    /**
+     * 天气预报推送
+     * @param weatherVO
+     * @return
+     */
+    public JSONObject sendWeather(WeatherVO weatherVO,String accessToken,String openId){
+        String url="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken;
+        JSONObject postDate = new JSONObject();
+        postDate.put("touser",openId);
+        postDate.put("template_id","NSkLvIy-Vd3tbAX9B-BxhcmXPZ8js1JQDbxnI06bQWE");
+        postDate.put("color","#FF0000");
+        JSONObject jsonObject = new JSONObject();
+        JSONObject value1 = new JSONObject();
+        value1.put("value",weatherVO.getTime());
+        value1.put("color","#173177");
+        jsonObject.put("time",value1);
+//            ---
+        JSONObject value2 = new JSONObject();
+        value2.put("value",weatherVO.getCityInfo().getCity());
+        value2.put("color","#173177");
+        jsonObject.put("city",value2);
+//            ---
+        JSONObject value3 = new JSONObject();
+        value3.put("value",weatherVO.getData().getShidu());
+        value3.put("color","#173177");
+        jsonObject.put("shidu", value3);
+//            --
+        JSONObject value4 = new JSONObject();
+        value4.put("value",weatherVO.getData().getWendu());
+        value4.put("color","#173177");
+        jsonObject.put("wendu", value4);
+//
+        JSONObject value5 = new JSONObject();
+        value5.put("value",weatherVO.getData().getQuality());
+        value5.put("color","#173177");
+        jsonObject.put("quality", value5);
+
+        postDate.put("data", jsonObject);
+        log.info(postDate.toJSONString());
+        JSONObject body = restTemplate.postForEntity(url, postDate, JSONObject.class).getBody();
+        log.info(body.toJSONString());
+        return body;
+    }
+
     public JSONObject sendMes(String name,String car,String address,String openId,String accessToken){
         String url="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+accessToken;
         JSONObject postDate = new JSONObject();
