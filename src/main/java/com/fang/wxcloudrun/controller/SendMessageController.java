@@ -1,7 +1,6 @@
 package com.fang.wxcloudrun.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fang.wxcloudrun.domain.vo.CityVO;
 import com.fang.wxcloudrun.service.AccessTokenService;
 import com.fang.wxcloudrun.service.HttpService;
 import com.fang.wxcloudrun.utils.ResultUtil;
@@ -14,29 +13,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author FPH
- * @since 2022年8月24日14:33:00
+ * @auth fph
+ * @since 2022年8月28日12:29:33
  */
 @RestController
-@RequestMapping("http")
-@Api(tags = "请求微信接口")
 @RequiredArgsConstructor
-public class HttpController {
-
+@RequestMapping("send")
+@Api(tags = "推送消息")
+public class SendMessageController {
     private final HttpService httpService;
-
     private final AccessTokenService accessTokenService;
 
-    @GetMapping("checkRedisAccessToken")
-    @ApiOperation("检查redis是否存在accessToken")
-    public ResponseEntity<String> checkRedis(){
-        return ResultUtil.success(accessTokenService.checkAccess());
-    }
-
-    @GetMapping("getUserInfo")
-    @ApiOperation("通过openId获取用户信息")
-    public ResponseEntity<JSONObject> getUserInfo(String openId){
-        accessTokenService.checkAccess();
-        return ResultUtil.success(httpService.getUserInfo(openId));
+    @GetMapping("sendCar")
+    @ApiOperation("推送购车提示消息")
+    public ResponseEntity<JSONObject> getUserInfo(String name, String car, String address, String openId){
+        String accessToken = accessTokenService.checkAccess();
+        return ResultUtil.success(httpService.sendMes(name,car,address,openId,accessToken));
     }
 }

@@ -21,12 +21,14 @@ public class AccessTokenService {
     /**
      * 检查redis中accessToken是否过期
      */
-    public void checkAccess(){
+    public String checkAccess(){
         String accessToken = getAccessToken();
         if(StringUtils.isEmpty(accessToken)){
             AccessTokenVO accessTokenVO = httpService.getAccessToken();
             saveAccessTokenForRedis(accessTokenVO);
+            accessToken=accessTokenVO.getAccess_token();
         }
+        return accessToken;
     }
 
     public String getAccessToken(){
