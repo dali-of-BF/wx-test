@@ -35,12 +35,6 @@ public class MyEventMessageHandler implements IEventMessageHandler {
         WxUser wxUser = new WxUser();
         wxUser.setOpenId(subscribeEventMessage.getFromUserName());
         wxUserService.save(wxUser);
-        if(subscribeEventMessage.getFromUserName().equals("oCahj6I9P0Uw2xA2V0PrYjlPJoQY")){
-            return new TextOutputMessage("辉哥哥你来啦");
-        }
-        if(subscribeEventMessage.getFromUserName().equals("oCahj6LRXev7t8C9voxt4AuZqzAg")){
-            return new TextOutputMessage("荣禄让我透透");
-        }
         return new TextOutputMessage("感谢你的关注");
     }
 

@@ -1,12 +1,9 @@
 package com.fang.wxcloudrun.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.fang.wxcloudrun.domain.entity.WxConfig;
 import com.fang.wxcloudrun.domain.vo.AccessTokenVO;
-import com.fang.wxcloudrun.domain.vo.CityInfoVO;
 import com.fang.wxcloudrun.domain.vo.CityVO;
-import com.fang.wxcloudrun.mapper.WxConfigMapper;
+import com.fang.wxcloudrun.domain.vo.WeatherVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class HttpService {
     private final RestTemplate restTemplate;
-    private final WxConfigMapper wxConfigMapper;
 
 
     @Value("${weixin4j.oauth.appid}")
@@ -30,18 +26,6 @@ public class HttpService {
 
     @Value("${weixin4j.oauth.secret}")
     private String secret;
-
-    /**
-     * 将accessToken保存进数据库
-     * @return
-     */
-    public String saveAccessToken(){
-        //存入数据库
-        AccessTokenVO accessToken = getAccessToken();
-        wxConfigMapper.delete(null);
-        wxConfigMapper.insert(WxConfig.builder().accessToken(accessToken.getAccess_token()).build());
-        return accessToken.getAccess_token();
-    }
 
     /**
      * 查询accessToken
@@ -114,10 +98,10 @@ public class HttpService {
      * @param code
      * @return
      */
-    public JSONObject getWeather(String code){
+    public WeatherVO getWeather(String code){
         String url="http://t.weather.sojson.com/api/weather/city/"+code;
         log.info("天气地址-->"+url);
-        JSONObject forObject = restTemplate.getForObject(url, JSONObject.class);
+        WeatherVO forObject = restTemplate.getForObject(url, WeatherVO.class);
         return forObject;
     }
 }

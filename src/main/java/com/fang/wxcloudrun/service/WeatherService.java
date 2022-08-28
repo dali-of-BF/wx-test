@@ -3,6 +3,7 @@ package com.fang.wxcloudrun.service;
 import com.alibaba.fastjson.JSONObject;
 import com.fang.wxcloudrun.domain.vo.CityInfoVO;
 import com.fang.wxcloudrun.domain.vo.CityVO;
+import com.fang.wxcloudrun.domain.vo.WeatherVO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -27,9 +28,9 @@ public class WeatherService {
      * @param city
      * @return
      */
-    public JSONObject getWeather(String city){
+    public WeatherVO getWeather(String city){
         accessTokenService.checkAccess();
-        JSONObject result=new JSONObject();
+        WeatherVO result=new WeatherVO();
         CityVO cityCode = httpService.getCityCode(city);
         List<CityInfoVO> list = cityCode.getList();
         if (CollectionUtils.isNotEmpty(list)){

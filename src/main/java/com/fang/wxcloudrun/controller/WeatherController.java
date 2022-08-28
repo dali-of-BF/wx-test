@@ -1,6 +1,6 @@
 package com.fang.wxcloudrun.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.fang.wxcloudrun.domain.vo.WeatherVO;
 import com.fang.wxcloudrun.service.WeatherService;
 import com.fang.wxcloudrun.utils.ResultUtil;
 import io.swagger.annotations.Api;
@@ -24,7 +24,7 @@ public class WeatherController {
 
     @GetMapping("getWeather")
     @ApiOperation("根据城市获取天气")
-    public ResponseEntity<JSONObject> getWeather(String city){
+    public ResponseEntity<WeatherVO> getWeather(String city){
         return ResultUtil.success(weatherService.getWeather(city));
     }
 }
