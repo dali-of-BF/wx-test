@@ -30,7 +30,7 @@ public class WeatherService {
      */
     public WeatherVO getWeather(String city){
         accessTokenService.checkAccess();
-        WeatherVO result=new WeatherVO();
+        WeatherVO result=null;
         CityVO cityCode = httpService.getCityCode(city);
         List<CityInfoVO> list = cityCode.getList();
         if (CollectionUtils.isNotEmpty(list)){

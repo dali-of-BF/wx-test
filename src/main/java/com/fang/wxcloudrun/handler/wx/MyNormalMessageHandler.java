@@ -39,15 +39,20 @@ public class MyNormalMessageHandler implements INormalMessageHandler {
     @Override
     public OutputMessage textTypeMsg(TextInputMessage textInputMessage) {
         String content = textInputMessage.getContent();
-        if(textInputMessage.getMsgType().equals("text")&& StringUtils.isNotEmpty(content)){
+        if(textInputMessage.getMsgType().equals("text")&& StringUtils.isNotEmpty(content)&&content.contains("天气")){
             //判断是否是天气：城市或者是天气:城市
-            List<String> list = Arrays.stream(content.split(":")).collect(Collectors.toList());
+            List<String> list = Arrays.stream(content.split("天气")).collect(Collectors.toList());
             String handler = list.stream().findFirst().orElse(null);
-            if(StringUtils.isNotEmpty(handler)&&"天气".equals(handler)&&list.size()==2){
-                String city = list.get(1);
-                WeatherVO weather = weatherService.getWeather(city);
+            if(list.size()==1&& StringUtils.isNotEmpty(handler)){
+                WeatherVO weather = weatherService.getWeather(handler);
+                if(weather==null){
+                    return new TextOutputMessage("查无此处，只能查询国内天气");
+                }
                 httpService.sendWeather(weather,accessTokenService.checkAccess(),textInputMessage.getFromUserName());
                 return null;
+            }
+            if (list.size()==0){
+                return new TextOutputMessage("你想查询哪里的天气呢？例如输入：厦门天气");
             }
         }
         return new TextOutputMessage("哈哈嘿");
